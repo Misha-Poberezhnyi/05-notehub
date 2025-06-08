@@ -11,7 +11,7 @@ import NoteForm from "../NoteForm/NoteForm";
 import SearchBox from "../SearchBox/SearchBox";
 import QueryStatus from "../QueryStatus/QueryStatus";
 
-import { fetchNotes, createNote, deleteNote } from "../service/notehub";
+import { fetchNotes, createNote, deleteNote } from "../../services/notehub";
 import type { NoteFormValues } from "../NoteForm/NoteForm";
 
 const PER_PAGE = 12;
