@@ -1,4 +1,4 @@
-import css from './QueryStatus.module.css';
+import css from "./QueryStatus.module.css";
 
 interface QueryStatusProps {
   isLoading: boolean;

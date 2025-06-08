@@ -1,4 +1,4 @@
-import css from './NoteList.module.css';
+import css from "./NoteList.module.css";
 
 interface Note {
   id: number;

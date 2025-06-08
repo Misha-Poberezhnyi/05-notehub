@@ -1,7 +1,7 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
-import css from './NoteForm.module.css';
+import css from "./NoteForm.module.css";
 
 export interface NoteFormValues {
   title: string;
