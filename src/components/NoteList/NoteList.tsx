@@ -1,11 +1,6 @@
-import css from "./NoteList.module.css";
-
-interface Note {
-  id: number;
-  title: string;
-  content: string;
-  tag?: string;
-}
+import React from 'react';
+import type { Note } from '../../types/note';
+import css from './NoteList.module.css';
 
 interface NoteListProps {
   notes: Note[];
@@ -13,15 +8,24 @@ interface NoteListProps {
 }
 
 export default function NoteList({ notes, onDelete }: NoteListProps) {
+  const handleDelete = (id: number, e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onDelete(id);
+  };
+
   return (
     <ul className={css.list}>
-      {notes.map(note => (
-        <li key={note.id} className={css.listItem}>
-          <h2 className={css.title}>{note.title}</h2>
-          <p className={css.content}>{note.content}</p>
+      {notes.map(({ id, title, content, tag }) => (
+        <li key={id} className={css.listItem}>
+          <h2 className={css.title}>{title}</h2>
+          <p className={css.content}>{content}</p>
           <div className={css.footer}>
-            {note.tag && <span className={css.tag}>{note.tag}</span>}
-            <button className={css.button} onClick={() => onDelete(note.id)}>
+            {tag && <span className={css.tag}>{tag}</span>}
+            <button
+              className={css.button}
+              onClick={(e) => handleDelete(id, e)}
+              aria-label={`Delete note titled ${title}`}
+            >
               Delete
             </button>
           </div>

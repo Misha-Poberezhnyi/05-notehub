@@ -1,4 +1,5 @@
-import css from "./SearchBox.module.css";
+import React from 'react';
+import css from './SearchBox.module.css';
 
 interface SearchBoxProps {
   value: string;
@@ -6,14 +7,19 @@ interface SearchBoxProps {
 }
 
 export default function SearchBox({ value, onChange }: SearchBoxProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.value);
+  };
+
   return (
     <input
       className={css.input}
       type="text"
       placeholder="Search notes"
       value={value}
-      onChange={e => onChange(e.target.value)}
+      onChange={handleChange}
       autoComplete="off"
+      aria-label="Search notes"
     />
   );
 }

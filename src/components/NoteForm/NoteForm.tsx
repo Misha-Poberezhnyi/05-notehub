@@ -1,7 +1,8 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-
-import css from "./NoteForm.module.css";
+import React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import type { FormikHelpers } from 'formik';
+import * as Yup from 'yup';
+import css from './NoteForm.module.css';
 
 export interface NoteFormValues {
   title: string;
@@ -19,8 +20,7 @@ const validationSchema = Yup.object({
     .min(3, 'Title must be at least 3 characters')
     .max(50, 'Title must be 50 characters or less')
     .required('Title is required'),
-  content: Yup.string()
-    .max(500, 'Content must be 500 characters or less'),
+  content: Yup.string().max(500, 'Content must be 500 characters or less'),
   tag: Yup.mixed<NoteFormValues['tag']>()
     .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'], 'Invalid tag')
     .required('Tag is required'),
@@ -37,9 +37,9 @@ export default function NoteForm({ onSubmit, onCancel }: NoteFormProps) {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values: NoteFormValues, helpers: FormikHelpers<NoteFormValues>) => {
         onSubmit(values);
-        setSubmitting(false);
+        helpers.setSubmitting(false);
       }}
     >
       {({ isSubmitting, isValid }) => (
@@ -78,7 +78,10 @@ export default function NoteForm({ onSubmit, onCancel }: NoteFormProps) {
             <button
               type="button"
               className={css.cancelButton}
-              onClick={onCancel}
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                e.preventDefault();
+                onCancel();
+              }}
             >
               Cancel
             </button>
