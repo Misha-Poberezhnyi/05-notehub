@@ -37,35 +37,39 @@ export default function App() {
   const createMutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
       toast.success("Note created successfully");
       setIsModalOpen(false);
       setSearchTerm("");
       setCurrentPage(1);
     },
-    onError: () => {
-      toast.error("Failed to create note");
+    onError: (error: unknown) => {
+      const message = error instanceof Error ? error.message : "Failed to create note";
+      toast.error(message);
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: deleteNote,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
       toast.success("Note deleted successfully");
     },
-    onError: () => {
-      toast.error("Failed to delete note");
+    onError: (error: unknown) => {
+      const message = error instanceof Error ? error.message : "Failed to delete note";
+      toast.error(message);
     },
   });
 
- const handleCreateNote = (values: NoteFormValues) => {
-  createMutation.mutate({
-    title: values.title,
-    text: values.content,  
-    tag: values.tag,
-  });
-};
+  const handleCreateNote = (values: NoteFormValues) => {
+    const payload = {
+      title: values.title.trim(),
+      content: values.content.trim(), 
+      tag: values.tag,
+    };
+    console.log("Submitting note:", payload);
+    createMutation.mutate(payload);
+  };
 
   const handleDeleteNote = (id: number) => {
     deleteMutation.mutate(id);
