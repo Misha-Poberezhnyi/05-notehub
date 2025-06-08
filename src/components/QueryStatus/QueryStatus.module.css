@@ -1,0 +1,22 @@
+.loader {
+  color: #007bff;
+  font-weight: 600;
+  padding: 20px;
+  text-align: center;
+}
+
+.error {
+  color: #dc3545;
+  font-weight: 600;
+  padding: 20px;
+  text-align: center;
+  background-color: #f8d7da;
+  border-radius: 4px;
+}
+
+.empty {
+  color: #6c757d;
+  font-style: italic;
+  padding: 20px;
+  text-align: center;
+}
