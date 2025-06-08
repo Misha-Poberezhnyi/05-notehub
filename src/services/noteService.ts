@@ -1,18 +1,20 @@
-import axios from 'axios';
-import type { Note, NotesResponse } from "../types/note";
+import axios from "axios";
+import type { Note, NotesResponse, CreateNotePayload } from "../types/note";
 
-const API_URL = 'https://notehub-public.goit.study/api/notes';
+const API_URL = "https://notehub-public.goit.study/api/notes";
 const TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
 
+console.log("Loaded NoteHub token:", TOKEN);
+
 if (!TOKEN) {
-  throw new Error('Authorization token required');
+  throw new Error("Authorization token required");
 }
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
     Authorization: `Bearer ${TOKEN}`,
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -27,16 +29,18 @@ export const fetchNotes = async (
   };
   if (search) params.search = search;
 
-  const response = await axiosInstance.get<NotesResponse>('', { params });
+  const response = await axiosInstance.get("", { params });
   return response.data;
 };
 
-export const createNote = async (note: {
-  title: string;
-  text: string;
-  tag: string;
-}): Promise<Note> => {
-  const response = await axiosInstance.post<Note>('', note);
+export const createNote = async (note: CreateNotePayload): Promise<Note> => {
+  const payload = {
+    title: note.title,
+    content: note.content,
+    tag: note.tag,
+  };
+
+  const response = await axiosInstance.post<Note>("", payload);
   return response.data;
 };
 

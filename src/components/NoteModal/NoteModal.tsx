@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import css from './NoteModal.module.css';
+import React, { useEffect } from "react";
+import css from "./NoteModal.module.css";
 
 interface NoteModalProps {
   onClose: () => void;
@@ -11,6 +11,7 @@ export default function NoteModal({ onClose, children }: NoteModalProps) {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
@@ -20,7 +21,7 @@ export default function NoteModal({ onClose, children }: NoteModalProps) {
   };
 
   return (
-    <div className={css.backdrop} onClick={handleBackdropClick} role="dialog" aria-modal="true">
+    <div className={css.backdrop} role="dialog" aria-modal="true" onClick={handleBackdropClick}>
       <div className={css.modal}>{children}</div>
     </div>
   );

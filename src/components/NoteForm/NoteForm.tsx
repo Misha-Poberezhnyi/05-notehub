@@ -1,8 +1,8 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import type { FormikHelpers } from 'formik';
-import * as Yup from 'yup';
-import css from './NoteForm.module.css';
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import type { FormikHelpers } from "formik";
+import * as Yup from "yup";
+import css from "./NoteForm.module.css";
 
 export interface NoteFormValues {
   title: string;

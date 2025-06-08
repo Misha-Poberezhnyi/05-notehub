@@ -1,4 +1,5 @@
-import css from "./QueryStatus.module.css";
+
+import css from "../QueryStatus/QueryStatus.module.css";
 
 interface QueryStatusProps {
   isLoading: boolean;
@@ -13,7 +14,7 @@ export default function QueryStatus({
   isError,
   error,
   isEmpty,
-  emptyMessage = 'No notes found',
+  emptyMessage = 'No data found',
 }: QueryStatusProps) {
   if (isLoading) {
     return <div className={css.loader}>Loading...</div>;

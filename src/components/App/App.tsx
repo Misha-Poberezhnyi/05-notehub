@@ -13,6 +13,7 @@ import QueryStatus from "../QueryStatus/QueryStatus";
 
 import { fetchNotes, createNote, deleteNote } from "../../services/noteService";
 import type { NoteFormValues } from "../NoteForm/NoteForm";
+import type { CreateNotePayload } from "../../types/note";
 
 const PER_PAGE = 12;
 
@@ -61,15 +62,14 @@ export default function App() {
     },
   });
 
-  const handleCreateNote = (values: NoteFormValues) => {
-    const payload = {
-      title: values.title.trim(),
-      content: values.content.trim(), 
-      tag: values.tag,
-    };
-    console.log("Submitting note:", payload);
-    createMutation.mutate(payload);
+const handleCreateNote = (values: NoteFormValues) => {
+  const payload: CreateNotePayload = {
+    title: values.title.trim(),
+    content: values.content.trim(), 
+    tag: values.tag,
   };
+  createMutation.mutate(payload);
+};
 
   const handleDeleteNote = (id: number) => {
     deleteMutation.mutate(id);
@@ -100,9 +100,7 @@ export default function App() {
         emptyMessage="No notes found"
       />
 
-      {notes.length > 0 && (
-        <NoteList notes={notes} onDelete={handleDeleteNote} />
-      )}
+      {notes.length > 0 && <NoteList notes={notes} onDelete={handleDeleteNote} />}
 
       {totalPages > 1 && (
         <Pagination

@@ -1,11 +1,19 @@
 export interface Note {
   id: number;
   title: string;
-  content: string;
-  tag?: string;
+  content: string; 
+  tag: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface NotesResponse {
+export type CreateNotePayload = {
+  title: string;
+  content: string; 
+  tag: string;
+};
+
+export type NotesResponse = {
   notes: Note[];
   totalPages: number;
-}
+};
