@@ -13,8 +13,8 @@ export default function QueryStatus({ isLoading, isError, error, isEmpty, emptyM
     return <p className={`${styles.statusMessage} ${styles.loading}`}>Loading...</p>;
   }
 
-  if (isError && error) {
-    return <p className={`${styles.statusMessage} ${styles.error}`}>Error: {error.message}</p>;
+  if (isError) {
+    return <p className={`${styles.statusMessage} ${styles.error}`}>Error: {error?.message ?? "Unknown error"}</p>;
   }
 
   if (isEmpty) {
