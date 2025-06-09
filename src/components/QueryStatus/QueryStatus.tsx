@@ -1,35 +1,24 @@
-
-import css from "../QueryStatus/QueryStatus.module.css";
+import styles from "../QueryStatus/QueryStatus.module.css";
 
 interface QueryStatusProps {
   isLoading: boolean;
   isError: boolean;
-  error?: unknown;
-  isEmpty?: boolean;
-  emptyMessage?: string;
+  error?: Error | null;
+  isEmpty: boolean;
+  emptyMessage: string;
 }
 
-export default function QueryStatus({
-  isLoading,
-  isError,
-  error,
-  isEmpty,
-  emptyMessage = 'No data found',
-}: QueryStatusProps) {
+export default function QueryStatus({ isLoading, isError, error, isEmpty, emptyMessage }: QueryStatusProps) {
   if (isLoading) {
-    return <div className={css.loader}>Loading...</div>;
+    return <p className={`${styles.statusMessage} ${styles.loading}`}>Loading...</p>;
   }
 
-  if (isError) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : 'An error occurred while fetching data';
-    return <div className={css.error}>{message}</div>;
+  if (isError && error) {
+    return <p className={`${styles.statusMessage} ${styles.error}`}>Error: {error.message}</p>;
   }
 
   if (isEmpty) {
-    return <div className={css.empty}>{emptyMessage}</div>;
+    return <p className={`${styles.statusMessage} ${styles.empty}`}>{emptyMessage}</p>;
   }
 
   return null;
