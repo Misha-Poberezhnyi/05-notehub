@@ -1,44 +1,54 @@
-import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createNote } from "../../services/noteService";
 import css from "./NoteForm.module.css";
 
 export interface NoteFormValues {
   title: string;
   content: string;
-  tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
+  tag: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 }
 
 interface NoteFormProps {
-  onSubmit: (values: NoteFormValues) => void;
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 const validationSchema = Yup.object({
   title: Yup.string()
-    .min(3, 'Title must be at least 3 characters')
-    .max(50, 'Title must be 50 characters or less')
-    .required('Title is required'),
-  content: Yup.string().max(500, 'Content must be 500 characters or less'),
-  tag: Yup.mixed<NoteFormValues['tag']>()
-    .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'], 'Invalid tag')
-    .required('Tag is required'),
+    .min(3, "Title must be at least 3 characters")
+    .max(50, "Title must be 50 characters or less")
+    .required("Title is required"),
+  content: Yup.string().max(500, "Content must be 500 characters or less"),
+  tag: Yup.mixed<NoteFormValues["tag"]>()
+    .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"], "Invalid tag")
+    .required("Tag is required"),
 });
 
 const initialValues: NoteFormValues = {
-  title: '',
-  content: '',
-  tag: 'Todo',
+  title: "",
+  content: "",
+  tag: "Todo",
 };
 
-export default function NoteForm({ onSubmit, onCancel }: NoteFormProps) {
+export default function NoteForm({ onClose }: NoteFormProps) {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      onClose();
+    },
+  });
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values: NoteFormValues, helpers: FormikHelpers<NoteFormValues>) => {
-        onSubmit(values);
+        mutation.mutate(values);
         helpers.setSubmitting(false);
       }}
     >
@@ -78,9 +88,9 @@ export default function NoteForm({ onSubmit, onCancel }: NoteFormProps) {
             <button
               type="button"
               className={css.cancelButton}
-              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              onClick={(e) => {
                 e.preventDefault();
-                onCancel();
+                onClose();
               }}
             >
               Cancel

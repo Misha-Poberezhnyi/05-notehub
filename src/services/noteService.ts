@@ -4,8 +4,6 @@ import type { Note, NotesResponse, CreateNotePayload } from "../types/note";
 const API_URL = "https://notehub-public.goit.study/api/notes";
 const TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
 
-console.log("Loaded NoteHub token:", TOKEN);
-
 if (!TOKEN) {
   throw new Error("Authorization token required");
 }
@@ -19,17 +17,16 @@ const axiosInstance = axios.create({
 });
 
 export const fetchNotes = async (
-  page: number,
-  perPage: number,
-  search?: string
+  search: string,
+  page: number
 ): Promise<NotesResponse> => {
-  const params: Record<string, string | number> = {
-    page,
-    perPage,
-  };
-  if (search) params.search = search;
+  const params: Record<string, string | number> = { page };
 
-  const response = await axiosInstance.get("", { params });
+  if (search.trim()) {
+    params.search = search;
+  }
+
+  const response = await axiosInstance.get<NotesResponse>("", { params });
   return response.data;
 };
 
@@ -44,6 +41,7 @@ export const createNote = async (note: CreateNotePayload): Promise<Note> => {
   return response.data;
 };
 
-export const deleteNote = async (id: number): Promise<void> => {
-  await axiosInstance.delete(`/${id}`);
+export const deleteNote = async (id: number): Promise<Note> => {
+  const response = await axiosInstance.delete<Note>(`/${id}`);
+  return response.data;
 };
