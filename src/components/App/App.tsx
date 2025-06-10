@@ -19,9 +19,10 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch] = useDebounce(searchTerm, 500);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [debouncedSearch]);
+   useEffect(() => {
+    setCurrentPage((prev) => (prev !== 1 ? 1 : prev));
+  }, [searchTerm]);
+
 
   const { data, isLoading, isError, error, isFetching } = useQuery<NotesResponse, Error>({
     queryKey: ["notes", debouncedSearch, currentPage],
@@ -46,10 +47,7 @@ export default function App() {
           Create note +
         </button>
 
-        <SearchBox
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
+        <SearchBox value={searchTerm} onChange={handleSearchChange} />
 
         {isFetching && !isLoading && <span className={css.spinner} />}
       </header>
